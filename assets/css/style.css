@@ -1,0 +1,38 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.map, .img {
+    width: 100%;
+    height: 100vh;
+}
+
+.hidden-in {
+    position: absolute;
+    top:0;
+    right: 0;
+    transform:rotate(90deg) translate(50%);
+    z-index: 9999;
+}
+
+.img {
+    display: none;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 500;
+}
+
+.img.active {
+    display: block;
+}
+
+.img > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

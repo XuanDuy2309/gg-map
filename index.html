@@ -1,0 +1,90 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="map" id="map"></div>
+
+      <div class="hidden-in">
+        <input type="range" id="inputRange" value="0" />
+      </div>
+
+      <div class="img" id="imageMap">
+        <img
+          src="./assets/images/duan24h.net_BĐQHSDĐ_Dong_Anh_HN_2030.jpg"
+          alt=""
+        />
+      </div>
+    </div>
+
+    <script>
+      const inputRange = document.getElementById("inputRange");
+      const imageMap = document.getElementById("imageMap");
+
+      var map = L.map("map").setView(
+        [21.13302330047784, 105.82735061645509],
+        12.625
+      );
+
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
+
+      var prevPos = map.getCenter();
+      var prevZoom = map.getZoom();
+
+      map.on("moveend", () => {
+        const center = map.getCenter();
+        var currZoom = map.getZoom();
+
+        var scaleFactor = Math.pow(2, currZoom - prevZoom);
+        console.log(scaleFactor);
+        var distMoved = {
+          x:
+            ((center.lng - prevPos.lng) * map.getSize().x) /
+            (map.getBounds().getEast() - map.getBounds().getWest()),
+          y:
+            ((center.lat - prevPos.lat) * map.getSize().y) /
+            (map.getBounds().getNorth() - map.getBounds().getSouth()),
+        };
+
+        console.log(
+          "Distance moved: " +
+            distMoved.x.toFixed(2) +
+            " x " +
+            distMoved.y.toFixed(2) +
+            " pixels"
+        );
+
+        imageMap.style.top = distMoved.y.toFixed(2);
+        imageMap.style.left = -distMoved.x.toFixed(2);
+        imageMap.style.transform = `scale(${scaleFactor})`;
+      });
+
+      inputRange.addEventListener("change", () => {
+        if (inputRange.value != 0) {
+          imageMap.classList.add("active");
+          imageMap.style.opacity = inputRange.value / 100;
+        } else {
+          imageMap.classList.remove("active");
+        }
+      });
+    </script>
+  </body>
+</html>
