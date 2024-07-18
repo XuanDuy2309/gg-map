@@ -17,6 +17,9 @@
     ></script>
   </head>
   <body>
+    <div class="preloader">
+      <div class="loading"></div>
+    </div>
     <div class="main">
       <div class="map" id="map"></div>
 
@@ -84,6 +87,11 @@
         } else {
           imageMap.classList.remove("active");
         }
+      });
+
+      window.addEventListener("load", () => {
+        const preloader = document.querySelector(".preloader");
+        preloader.classList.add("unactive");
       });
     </script>
   </body>
